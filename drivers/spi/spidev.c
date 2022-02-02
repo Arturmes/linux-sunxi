@@ -707,6 +707,7 @@ static const struct spi_device_id spidev_spi_ids[] = {
 	{ .name = "bk4" },
 	{ .name = "dhcom-board" },
 	{ .name = "m53cpld" },
+	{ .name = "spi-dev" },
 	{ .name = "spi-petra" },
 	{ .name = "spi-authenta" },
 	{ .name = "em3581" },
@@ -725,10 +726,12 @@ static int spidev_of_check(struct device *dev)
 		return 0;
 
 	dev_err(dev, "spidev listed directly in DT is not supported\n");
+	dev_info(dev, "Use a compatible alias string like spi-dev in DT\n");
 	return -EINVAL;
 }
 
 static const struct of_device_id spidev_dt_ids[] = {
+	{ .compatible = "armbian,spi-dev", .data = &spidev_of_check },
 	{ .compatible = "cisco,spi-petra", .data = &spidev_of_check },
 	{ .compatible = "dh,dhcom-board", .data = &spidev_of_check },
 	{ .compatible = "elgin,jg10309-01", .data = &spidev_of_check },
