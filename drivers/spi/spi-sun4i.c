@@ -390,6 +390,7 @@ static int sun4i_spi_runtime_resume(struct device *dev)
 	struct spi_controller *host = dev_get_drvdata(dev);
 	struct sun4i_spi *sspi = spi_controller_get_devdata(host);
 	int ret;
+	u32 reg;
 
 	ret = clk_prepare_enable(sspi->hclk);
 	if (ret) {
@@ -402,9 +403,10 @@ static int sun4i_spi_runtime_resume(struct device *dev)
 		dev_err(dev, "Couldn't enable module clock\n");
 		goto err;
 	}
+	reg = sun4i_spi_read(sspi, SUN4I_CTL_REG);
 
 	sun4i_spi_write(sspi, SUN4I_CTL_REG,
-			SUN4I_CTL_ENABLE | SUN4I_CTL_MASTER | SUN4I_CTL_TP);
+			reg | SUN4I_CTL_ENABLE | SUN4I_CTL_MASTER | SUN4I_CTL_TP);
 
 	return 0;
 
