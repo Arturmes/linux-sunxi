@@ -884,7 +884,8 @@ impl<'a, K, V> Cursor<'a, K, V> {
         NonNull::new(neighbor)
     }
 
-    /// SAFETY:
+    /// # Safety
+    ///
     /// - `node` must be a valid pointer to a node in an [`RBTree`].
     /// - The caller has immutable access to `node` for the duration of 'b.
     unsafe fn to_key_value<'b>(node: NonNull<bindings::rb_node>) -> (&'b K, &'b V) {
@@ -894,7 +895,8 @@ impl<'a, K, V> Cursor<'a, K, V> {
         (k, unsafe { &*v })
     }
 
-    /// SAFETY:
+    /// # Safety
+    ///
     /// - `node` must be a valid pointer to a node in an [`RBTree`].
     /// - The caller has mutable access to `node` for the duration of 'b.
     unsafe fn to_key_value_mut<'b>(node: NonNull<bindings::rb_node>) -> (&'b K, &'b mut V) {
@@ -904,7 +906,8 @@ impl<'a, K, V> Cursor<'a, K, V> {
         (k, unsafe { &mut *v })
     }
 
-    /// SAFETY:
+    /// # Safety
+    ///
     /// - `node` must be a valid pointer to a node in an [`RBTree`].
     /// - The caller has immutable access to the key for the duration of 'b.
     unsafe fn to_key_value_raw<'b>(node: NonNull<bindings::rb_node>) -> (&'b K, *mut V) {
@@ -1144,7 +1147,7 @@ pub struct VacantEntry<'a, K, V> {
 /// # Invariants
 /// - `parent` may be null if the new node becomes the root.
 /// - `child_field_of_parent` is a valid pointer to the left-child or right-child of `parent`. If `parent` is
-///     null, it is a pointer to the root of the [`RBTree`].
+///   null, it is a pointer to the root of the [`RBTree`].
 struct RawVacantEntry<'a, K, V> {
     rbtree: *mut RBTree<K, V>,
     /// The node that will become the parent of the new node if we insert one.
